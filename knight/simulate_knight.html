@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<title>Simulation for Knight moves on chess board</title>
+	<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="../bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="../css/site.css" rel="stylesheet">
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+      <script src="../bootstrap/js/html5shiv.js"></script>
+    <![endif]-->
+<script type="text/javascript" src="../bootstrap/js/jquery_1_9_1.js"></script>
+	<script type="text/javascript">
+
+		
+		function start_similation(total, start) {
+
+			var move_count = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0 };
+
+			var move_set = {
+				1 : [7, 10],
+				2 : [8, 9, 11],
+				3 : [5, 10, 12],
+				4 : [6, 11],
+				5 : [3, 11, 14],
+				6 : [4, 12, 13, 15],
+				7 : [1, 9, 14, 16],
+				8 : [2, 10, 15],
+				9 : [2, 7, 15],
+				10 : [16, 8, 1, 3],
+				11 : [2, 4, 5, 13],
+				12 : [3, 6, 14],
+				13 : [11, 6],
+				14 : [5, 7, 12],
+				15 : [6, 8, 9],
+				16 : [10, 7]
+			};
+
+			var iCount = total;
+			var toStart = start;
+			while(iCount >= 0) {
+				iCount--;
+
+				var j = Math.round(Math.random() * 1000) % (move_set[toStart].length);
+				if(j > (move_set[toStart].length - 1)) {
+					j = move_set[toStart].length - 1
+				}
+				//console.log(toStart + ' : ' +move_set[toStart] + ' : '+ j);
+
+
+				//$('td').html('');
+				//$('#cell_'+start).html('1');
+				//$('#divStart').html($('#divStart').html() + "<br />Move: " + start);
+				
+				//$('#divStart').html($('#divStart').html() + "<br />Move: " + j);
+				
+				toStart = move_set[toStart][j];
+
+				// incrementing the count for this move
+				move_count[toStart]++;
+
+			}
+
+			for (var a in move_count) {
+
+				var val = new String(move_count[a]/total);
+				//console.log(a + ' : ' + move_count[a]);
+				$('#cell_'+a).html(move_count[a] + ' (' + val.substr(0,6) + ')');
+			}
+		}
+		$(document).ready(function() {
+
+
+			/**
+			$('#btnRandomMove').bind('click',{move_set:move_set}, function(event) {
+				console.log(event.data);
+				alert(Math.floor((Math.random()*(event.data.move_set[1].length) )+1));	
+			});
+*/
+
+			$('#btnStartMove').bind('click', function(event) {
+				start_similation($('#txtIterations').val(), $('#selectStart').val());
+			});
+
+			$('#tbl_board td').each(function(index){
+				$(this).html("_&nbsp;");
+			});
+
+			var i = 16;
+			while(i > 0) {
+				$('#selectStart').append('<option value="'+i+'">'+i+'</option>');
+				i--;
+			}
+
+			$('div:contains("The University of Southern California does not screen or control")').remove();
+			
+			
+		});
+
+
+	</script>
+</head>
+
+<body>
+
+<div class="container">
+	<div class="row">
+		<div class="span3">
+		<h4> Layout of the chess board </h4>
+			<table class="table table-striped table-bordered">
+			<tr> <td>1</td> <td>2</td> <td>3</td> <td>4</td> </tr>
+			<tr> <td>5</td> <td>6</td> <td>7</td> <td>8</td> </tr>
+			<tr> <td>9</td> <td>10</td> <td>11</td> <td>12</td> </tr>
+			<tr> <td>13</td> <td>14</td> <td>15</td> <td>16</td> </tr>
+		</table>
+		</div>
+		<div class="span1"> &nbsp;</div>
+		
+		<div class="span6">
+			<h4>Instructions:</h4>
+			<p>Enter the total number of moves to be played. 
+				<br />Start with a small number and increment the digits as you find that your browser can take in more computations.
+				<br /> You can also select the starting cell number.
+				<br /> If you are a mac user, use Safari as it works best. Else use Goggle Chrome.
+				<br /> Firefox and IE can be really slow.
+				<br /> <a href="Math505a_-_Chess_Knight_Project.pdf">Here is the project report document.</a>
+			</p>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span3">
+			<label for="txtIterations">Total Moves: </label> <input type="text" size="12px" id="txtIterations"/>
+		</div>
+		<div class="span3">
+			<label for="selectStart">Starting at: </label> 
+			<select id="selectStart"> </select>
+		</div>
+	</div>
+	
+	<div class="row"> <div class="span6">
+		<h4>Simulation Result</h4>
+		<table id="tbl_board"  class="table table-bordered"	>
+			<tr> <td id="cell_1"></td> <td id="cell_2"></td> <td id="cell_3"></td> <td id="cell_4"></td>  </tr>
+			<tr> <td id="cell_5"></td> <td id="cell_6"></td> <td id="cell_7"></td> <td id="cell_8"></td>  </tr>
+			<tr> <td id="cell_9"></td> <td id="cell_10"></td> <td id="cell_11"></td> <td id="cell_12"></td>  </tr>
+			<tr> <td id="cell_13"></td> <td id="cell_14"></td> <td id="cell_15"></td> <td id="cell_16"></td>  </tr>
+		</table>
+	</div>
+	</div>
+	
+	<input class="btn btn-primary" type="button" id='btnStartMove' value="Start.!!" />
+
+	<div style="margin-top:20px">
+		
+	</div>
+</div>
+</body>
+
+</html>
